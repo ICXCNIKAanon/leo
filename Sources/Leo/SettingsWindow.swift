@@ -58,32 +58,32 @@ struct SettingsView: View {
 // MARK: - General Tab
 
 struct GeneralSettingsTab: View {
-    @State private var settings = SettingsManager.shared
+    @Bindable private var settings = SettingsManager.shared
 
     var body: some View {
         Form {
-            Toggle("Show notch overlay", isOn: Bindable(settings).$showNotch)
+            Toggle("Show notch overlay", isOn: $settings.showNotch)
             Text("Display the Leo pill in the MacBook notch area")
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
             Divider()
 
-            Toggle("Enable notification sounds", isOn: Bindable(settings).$soundEnabled)
+            Toggle("Enable notification sounds", isOn: $settings.soundEnabled)
             Text("Play a sound when Claude completes a task")
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
             Divider()
 
-            Toggle("Auto-launch Claude Code", isOn: Bindable(settings).$claudeIntegrationEnabled)
+            Toggle("Auto-launch Claude Code", isOn: $settings.claudeIntegrationEnabled)
             Text("Automatically start Claude when opening a terminal in a project with CLAUDE.md")
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
             Divider()
 
-            Toggle("Launch at login", isOn: Bindable(settings).$launchAtLogin)
+            Toggle("Launch at login", isOn: $settings.launchAtLogin)
 
             Divider()
 
@@ -94,11 +94,17 @@ struct GeneralSettingsTab: View {
                 HStack {
                     Text("Width:")
                         .font(.caption)
-                    TextField("", value: Bindable(settings).$panelWidth, format: .number)
+                    TextField("", value: Binding(
+                        get: { Double(settings.panelWidth) },
+                        set: { settings.panelWidth = CGFloat($0) }
+                    ), format: .number)
                         .frame(width: 60)
                     Text("Height:")
                         .font(.caption)
-                    TextField("", value: Bindable(settings).$panelHeight, format: .number)
+                    TextField("", value: Binding(
+                        get: { Double(settings.panelHeight) },
+                        set: { settings.panelHeight = CGFloat($0) }
+                    ), format: .number)
                         .frame(width: 60)
                 }
             }
@@ -109,7 +115,7 @@ struct GeneralSettingsTab: View {
 // MARK: - Hotkey Tab
 
 struct HotkeySettingsTab: View {
-    @State private var settings = SettingsManager.shared
+    @Bindable private var settings = SettingsManager.shared
     @State private var isRecording = false
 
     var body: some View {
@@ -219,7 +225,7 @@ class RecorderView: NSView {
 // MARK: - Editors Tab
 
 struct EditorsSettingsTab: View {
-    @State private var settings = SettingsManager.shared
+    @Bindable private var settings = SettingsManager.shared
 
     var body: some View {
         Form {

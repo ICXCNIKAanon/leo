@@ -171,7 +171,7 @@ final class TerminalManager: NSObject {
             var line = ""
             for col in 0..<cols {
                 let ch = terminalAccess.getCharacter(col: col, row: row)
-                let scalar = ch.value == 0 ? " " : String(Unicode.Scalar(ch.value) ?? " ")
+                let scalar = ch.flatMap({ String($0) }) ?? " "
                 line += scalar
             }
             let trimmed = line.trimmingCharacters(in: .whitespaces)

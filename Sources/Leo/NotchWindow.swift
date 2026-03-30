@@ -446,12 +446,12 @@ class NotchWindow: NSPanel {
         registerForDraggedTypes([.fileURL, .URL])
     }
 
-    override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
+    func draggingEntered(_ sender: any NSDraggingInfo) -> NSDragOperation {
         if !isHovered {
             isHovered = true
             onHover()
         }
-        return .none
+        return []
     }
 
     // MARK: - Screen Changes
